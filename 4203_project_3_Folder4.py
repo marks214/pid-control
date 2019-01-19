@@ -1,14 +1,6 @@
-
-portName = 'COM4'
-arduino = pyfirmata.Arduino(portName)
-
-it = pyfirmata.util.Iterator(arduino)
-it.start()
-
 import csv
 import time  # Required to timestamp & delay functions
 from random import shuffle
-
 import numpy as np
 # We want to collect experimental data
 # describing the response of the measured T to the changes
@@ -20,6 +12,12 @@ import numpy as np
 #from pylive import live_plotter
 import pyfirmata  # facilitates communication with Arduino https://pyfirmata.readthedocs.io/en/latest/
 from progress.bar import ChargingBar  # required to display a charging bar
+
+portName = 'COM3'
+arduino = pyfirmata.Arduino(portName)
+
+it = pyfirmata.util.Iterator(arduino)
+it.start()
 
 start_time = time.time()
 
