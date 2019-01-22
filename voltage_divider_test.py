@@ -1,7 +1,13 @@
 import pyfirmata #facilitates communication with Arduino https://pyfirmata.readthedocs.io/en/latest/
 import numpy as np
 from time import sleep
+from arduino_helper import ArduinoHelper
 
+board = ArduinoHelper()
+start_time = time.time()
+file_name = '_Lab_on_a_Chip' + str(start_time) + '.csv'
+signal0 = board.read_input_pin()
+print(signal0, 'signal0')
 
 try:
     portName = 'COM3' #assigns a variable

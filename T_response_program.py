@@ -13,6 +13,8 @@ from progress.bar import ChargingBar  # required to display a charging bar
 from arduino_helper import ArduinoHelper
 
 board = ArduinoHelper()
+start_time = time.time()
+file_name = '_Lab_on_a_Chip' + str(start_time) + '.csv'
 signal0 = board.read_input_pin()
 print(signal0, 'signal0')
 
@@ -20,7 +22,7 @@ DC_values = [1]
 
 seconds_between_readings = 1
 seconds_to_equalize_min = 10
-seconds_to_equalize_max = 360
+seconds_to_equalize_max = 400
 
 def get_temperature(incoming_voltage):
     """
@@ -40,9 +42,9 @@ def measure_temperatures(DC):
 
 def record_temperature(temperature, DC, incoming_voltage):
     try:
-        with open('_Lab_on_a_Chip' + str(board.start_time) + '.csv', 'a', newline='') as csvfile:
+        with open(file_name, 'a', newline='') as csvfile:
             temperaturewriter = csv.writer(csvfile, delimiter=',')
-            temperaturewriter.writerow([time.time() - board.start_time, DC, temperature, incoming_voltage, '5'])  
+            temperaturewriter.writerow([time.time() - start_time, DC, temperature, incoming_voltage, '5', ''])  
     except:
         print("weird file error", time.time())
 
@@ -55,7 +57,12 @@ def stabilize_initial():
             raise Exception("Temperature during stabilization period out of expected range")
         time.sleep(seconds_between_readings)
 
+
+
 def run():  
+    with open(file_name, 'a', newline='') as csvfile:
+        temperaturewriter = csv.writer(csvfile, delimiter=',')
+        temperaturewriter.writerow(['time', 'DC', 'temperature', 'incoming_voltage', 'input5V_voltage', 'set_point_temperature'])
     stabilize_initial()
 
     for DC in DC_values:
