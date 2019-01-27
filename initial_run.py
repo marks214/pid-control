@@ -14,7 +14,8 @@ try:
         else:
             output += ' OFF'
         board.write_to_lcd(output)
-
+except KeyboardInterrupt:
+    print('Program Stopped.')
 finally:
     board.arduino.exit()
 

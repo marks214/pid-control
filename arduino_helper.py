@@ -1,10 +1,9 @@
 import time  # Required to timestamp & delay functions
-from random import shuffle
 import numpy as np
 from pyfirmata import Arduino, util, STRING_DATA
 
 class  ArduinoHelper(object):
-    portName = 'COM3'
+    portName = 'COM4'
 
     def __init__(self):
         self.arduino = Arduino(self.portName)

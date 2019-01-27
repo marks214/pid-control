@@ -1,3 +1,3 @@
 class Config:
-    PORT_NAME = 'COM3'
+    PORT_NAME = 'COM4'
     

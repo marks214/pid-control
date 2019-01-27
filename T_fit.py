@@ -12,7 +12,7 @@ figwidth = 10
 figheight = 8
 fs = 15
 
-file_name = '_Lab_on_a_Chip1547942957.6199136'
+file_name = '_4203_project_31542517524.9575963_lots_of_data'
 data = pd.read_csv(file_name + '.csv')
 data = data.reset_index(drop=True) # reset the index
 data = data.reset_index()
@@ -24,20 +24,38 @@ def model_heating(t, tau, K, C):
 def model_cooling(t, tau, K, C):
     return K*(np.exp(np.divide(np.negative(t), tau))) + C
 
+def get_heating_label(popt):
+     label = r'$f(t) = $' + str(round(popt[1], 2)) + r'$(1-$' + r'$exp(-t/$' + str(round(popt[0], 2)) + r'$)) +  $' + str(round(popt[2], 2))
+     print(label)
+     return label
+
+def get_cooling_label(popt):
+     label =  r'$f(t) = $' + str(round(popt[1], 2)) + r'$exp(-t/$' + str(round(popt[0], 2)) + r'$) + $' + str(round(popt[2], 2))
+     print(label)
+     return label
+     
 def PlotTemps(time_values, temperature_values, start_DC, end_DC):
     if start_DC == end_DC:
         return
-    """popt is optimal value for parametrs: tau here
-       pcov is covariance of popt...how well it did"""
-    popt, pcov = curve_fit(model_heating, time_values, temperature_values)#, p0=(166, -13, 37))
+
+    if start_DC < end_DC:
+        model = model_heating
+        initial_guess = (40, max(temperature_values) - temperature_values[0], temperature_values[0])
+        get_label = get_heating_label
+    else:
+        model = model_cooling
+        initial_guess = (40, max(temperature_values) - temperature_values[-1], temperature_values[-1])
+        get_label = get_cooling_label
+
+    popt, pcov = curve_fit(model, time_values, temperature_values, p0=initial_guess)
     plt.figure(figsize=(figwidth,figheight))
-    plt.plot(time_values,temperature_values, 'm.',label='DC ' + str(start_DC) + ' to ' + str(end_DC)) # plot temp against time
-    plt.plot(time_values, model_heating(time_values, *popt), 'g', label= r'$f(t) = $' + str(round(popt[1], 2)) + r'$exp(-t/$' + str(round(popt[0], 2)) + r'$) + $' + str(round(popt[2], 2)))
+    plt.plot(time_values,temperature_values, 'm,',label='DC ' + str(start_DC) + ' to ' + str(end_DC)) # plot temp against time
+    plt.plot(time_values, model(time_values, *popt), 'g', label= get_label(popt) )
     plt.legend()
     plt.ylabel('Temperature (' + r'$\degree$' +'C)',fontsize=fs)
     plt.xlabel('Time (s)',fontsize=fs)
-    plt.savefig('oz_testTemperature'+ str(start_DC) +'to' + str(end_DC) + '.svg')
-    plt.show()
+    plt.savefig('from_controls_'+ str(start_DC) +'to' + str(end_DC) + '.svg')
+    
 
 full_time_values = data['time']
 full_temperature_values = data['temperature']
