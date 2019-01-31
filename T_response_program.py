@@ -12,17 +12,17 @@ from arduino_helper import ArduinoHelper
 
 board = ArduinoHelper()
 start_time = time.time()
-file_name = '_Lab_on_a_Chip_carbon_10.58mm_' + str(start_time) + '.csv'
+file_name = '_Lab_on_a_Chip_thermal_response_no_dt' + str(start_time) + '.csv'
 signal0 = board.read_input_pin()
 board.write_to_lcd(round(signal0, 2), ' initial V')
 
 #TODO: loop for generation of DC_values array
 
-DC_values = [1, 0, 0]# 0.2, 0, 0.3, 0, 0.4, 0, 0.5, 0, 0.6, 0, 0.7, 0, 0.8, 0, 0.9, 0, 1, 0]
+DC_values = [1, 0]# 0.2, 0, 0.3, 0, 0.4, 0, 0.5, 0, 0.6, 0, 0.7, 0, 0.8, 0, 0.9, 0, 1, 0]
 
 seconds_between_readings = 1
 seconds_to_equalize_min = 10
-seconds_to_equalize_max = 1200
+seconds_to_equalize_max = 400
 
 def get_temperature(incoming_voltage):
     """

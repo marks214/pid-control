@@ -12,7 +12,7 @@ figwidth = 10
 figheight = 8
 fs = 15
 
-file_name = '_4203_project_31542517524.9575963_lots_of_data'
+file_name = '_Lab_on_a_Chip_plastic_1_plastic_sphere_thermal_camera1548869196.0441263'
 data = pd.read_csv(file_name + '.csv')
 data = data.reset_index(drop=True) # reset the index
 data = data.reset_index()
@@ -49,12 +49,12 @@ def PlotTemps(time_values, temperature_values, start_DC, end_DC):
 
     popt, pcov = curve_fit(model, time_values, temperature_values, p0=initial_guess)
     plt.figure(figsize=(figwidth,figheight))
-    plt.plot(time_values,temperature_values, 'm,',label='DC ' + str(start_DC) + ' to ' + str(end_DC)) # plot temp against time
+    plt.plot(time_values,temperature_values, 'm.',label='DC ' + str(start_DC) + ' to ' + str(end_DC)) # plot temp against time
     plt.plot(time_values, model(time_values, *popt), 'g', label= get_label(popt) )
     plt.legend()
     plt.ylabel('Temperature (' + r'$\degree$' +'C)',fontsize=fs)
     plt.xlabel('Time (s)',fontsize=fs)
-    plt.savefig('from_controls_'+ str(start_DC) +'to' + str(end_DC) + '.svg')
+    plt.savefig('1_plastic_sphere_dt'+ str(start_DC) +'to' + str(end_DC) + '.svg')
     
 
 full_time_values = data['time']
